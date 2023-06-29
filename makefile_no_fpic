@@ -1,0 +1,26 @@
+# C++ compiler (see also LD)
+CC = g++
+CFLAGS = -m64 -std=c++17 -fpermissive -O1 -fno-omit-frame-pointer -fasynchronous-unwind-tables
+LDFLAGS = -O1 -m64
+
+INC = # redacted
+LIB = # redacted
+
+TARGET = asn1cpp
+
+SRC := $(shell find . -iname *.cc)
+OBJ := $(patsubst %.cc, %.o, $(SRC))
+
+.PHONY: default clean
+
+default: $(TARGET)
+
+%.o: %.cc
+	$(CC) -c -o $@ $^ $(CFLAGS) $(INC)
+
+$(TARGET): clean $(OBJ)
+	$(CC) $(LDFLAGS) $(OBJ) -o $(TARGET) $(LIB)
+
+clean:
+	rm -f $(TARGET)
+	rm -f $(OBJ)
